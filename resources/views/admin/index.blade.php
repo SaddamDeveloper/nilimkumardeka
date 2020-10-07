@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Project Title</title>
+    <title>Nilim Kumar Deka | Login</title>
     {{-- <link rel="icon" href="{{ asset('/logo/logo.png')}}" type="image/icon type"> --}}
 
     <!-- Bootstrap -->
@@ -72,10 +72,10 @@
 
                 <div>
                   <h1>
-                    Project Name
+                    Nilim Kumar Deka
                     {{-- <img src="{{ asset('logo/logo.png')}}" height="150"> --}}
                   </h1>
-                  <p>©2016 All Rights Reserved.</p>
+                  <p>©2020 All Rights Reserved.</p>
                 </div>
               </div>
             {{ Form::close() }}

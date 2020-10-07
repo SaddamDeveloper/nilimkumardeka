@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>Project Title</title>
+    <title>Nilim Kumar Deka | Admin Dashboard</title>
     {{-- <link rel="icon" href="{{ asset('logo/logo.png')}}" type="image/icon type"> --}}
 
 
@@ -57,7 +57,7 @@
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
               <a href="{{route('admin.deshboard')}}" class="site_title">
-                Project Name
+                Nilim Kumar Deka
                 {{-- <img src="{{ asset('logo/logo.png')}}" height="50" style=" width: 50%;"> --}}
               </a>
             </div>
@@ -70,7 +70,7 @@
                 <img src="images/img.jpg" alt="..." class="img-circle profile_img">
               </div> --}}
               <div class="profile_info">
-                <span>Welcome,<b>Admin</b></span>
+                <span>Welcome, <b>{{ Auth::guard('admin')->user()->name }}</b></span>
                 
               </div>
             </div>

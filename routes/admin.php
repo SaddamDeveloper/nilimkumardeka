@@ -1,7 +1,7 @@
 <?php
 // Admin Dashboard Route
 Route::group(['namespace' => 'Admin'],function(){
-    Route::get('/','LoginController@showLoginForm')->name('admin.login');    
+    Route::get('admin/login','LoginController@showLoginForm')->name('admin.login');    
     Route::post('login', 'LoginController@adminLogin');
     Route::post('logout', 'LoginController@logout')->name('admin.logout');
 
