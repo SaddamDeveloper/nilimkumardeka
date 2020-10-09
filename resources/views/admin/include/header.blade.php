@@ -75,7 +75,6 @@
               </div>
             </div>
             <!-- /menu profile quick info -->
-
             <br />
 
             <!-- sidebar menu -->
@@ -84,6 +83,14 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li><a href="{{ route('admin.deshboard')}}"><i class="fa fa-home"></i> Home </span></a>
+                  </li>
+                  <li><a href="{{route('admin.appointment')}}"><i class="fa fa-calendar" aria-hidden="true"></i>Appointments</a></li>
+                  <li>
+                    <a><i class="fa fa-newspaper-o" aria-hidden="true"></i> Blog <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ route('admin.blog')}}">Post Blog</a></li>
+                      <li><a href="{{ route('admin.blog_list') }}">Blog List</a></li>
+                    </ul>
                   </li>
                   <li><a href="{{route('admin.change_password_form')}}"><i class="fa fa-key" aria-hidden="true"></i>Change Password</a></li>
 

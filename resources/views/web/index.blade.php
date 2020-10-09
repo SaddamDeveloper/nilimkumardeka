@@ -136,27 +136,65 @@
                     <div class="tm-appointment-heading tm-gray-bg wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.1s">
                         <div class="tm-section-heading text-center">
                             <h2>MAKE AN APPOINTMENT</h2>
+                            <div class="col-md-6">
+                                @if (Session::has('message'))
+                                <div class="alert alert-success" >{{ Session::get('message') }}</div>
+                                @endif
+                                @if (Session::has('error'))
+                                    <div class="alert alert-danger">{{ Session::get('error') }}</div>
+                                @endif
+                            </div>
                             <div class="tm-section-seperator"><span></span></div>
                             <p>If you wont to make an appointment with any specialist just fill up the form with valid data and we will contact you via phone for confirmation.</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-5">
                     <div class="empty-space col-md-b40 col-xs-b40"></div>
-                    <form method="POST" action="#" class="tm-appointment-form" id="appointment-form">
+                    {{ Form::open(['method' => 'post','route'=>'web.appointment', 'class' => 'tm-appointment-form']) }}
                         <div id="tm-alert1"></div>
                         <div class="tm-form-field">
-                            <input type="text" id="uname" name="uname" placeholder="Full Name" required> <span class="bar"></span> </div>
-                        <div class="tm-form-field">
-                            <input type="text" id="uemail" name="uemail" placeholder="Email Address" required> <span class="bar"></span> </div>
-                        <div class="tm-form-field">
-                            <input type="text" id="unumber" name="unumber" placeholder="Phone Number" required> <span class="bar"></span> </div>
-                        <div class="tm-form-field">
-                            <input name="udate" type="text" id="udate" placeholder="Booking Date"> <span class="bar"></span>
-                            <div class="date-icon"><i class="fa fa-calendar"></i></div>
+                            <input type="text" id="uname" name="uname" placeholder="Full Name" value="{{ old('uname') }}" required> 
+                            @if($errors->has('uname'))
+                                <span class="invalid-feedback" role="alert" style="color:red">
+                                    <strong>{{ $errors->first('uname') }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         <div class="tm-form-field">
-                            <textarea cols="30" rows="10" id="umsg" name="umsg" placeholder="Your Message"></textarea> <span class="bar"></span> </div>
+                            <input type="email" id="uemail" name="uemail" placeholder="Email Address" value="{{ old('uemail') }}" required>
+                            @if($errors->has('uemail'))
+                                <span class="invalid-feedback" role="alert" style="color:red">
+                                    <strong>{{ $errors->first('uemail') }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="tm-form-field">
+                            <input type="number" id="unumber" name="unumber" placeholder="Phone Number" value="{{ old('unumber') }}"required>
+                            @if($errors->has('unumber'))
+                                <span class="invalid-feedback" role="alert" style="color:red">
+                                    <strong>{{ $errors->first('unumber') }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="tm-form-field">
+                            <input name="udate" type="date" placeholder="Booking Date" value="{{ old('udate') }}" required>
+                            {{-- <div class="date-icon"><i class="fa fa-calendar"></i></div> --}}
+                            @if($errors->has('udate'))
+                                <span class="invalid-feedback" role="alert" style="color:red">
+                                    <strong>{{ $errors->first('udate') }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="tm-form-field">
+                            <textarea cols="30" rows="10" id="umsg" name="umsg" placeholder="Your Message">{{ old('umsg') }}</textarea>
+                            @if($errors->has('umsg'))
+                                <span class="invalid-feedback" role="alert" style="color:red">
+                                    <strong>{{ $errors->first('umsg') }}</strong>
+                                </span>
+                            @enderror
+                        </div>
                         <div class="empty-space col-xs-b10"></div>
                         <div class="tm-form-field">
                             <button class="tm-btn1 tm-reverse" type="submit" id="appointment-submit" name="submit">BOOK APPOINTMENT</button>
@@ -240,6 +278,8 @@
         </div>
         <div class="empty-space col-lg-b70 col-xs-b40"></div>
     </section>
+
+    {{-- Blog Section --}}
     <section id="blog">
         <div class="empty-space col-md-b100 col-xs-b70"></div>
         <div class="tm-section-heading text-center">
@@ -249,75 +289,41 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="tm-post tm-style1 tm-type1">
-                        <div class="tm-post-thumb">
-                            <a href="{{route('web.blog-details')}}" class="tm-link-block"> <img class="lazy" data-src="web/assets/img/services.png" alt="blog1">
-                                <div class="tm-blog-hover"> <span class="tm-blog-shap"></span> <i class="fa fa-link"></i> </div>
-                            </a>
+                @if(isset($blogs) && !empty($blogs))
+                    @foreach ($blogs as $blog)
+                        <div class="col-md-4">
+                            <div class="tm-post tm-style1 tm-type1">
+                                <div class="tm-post-thumb">
+                                    <a href="{{route('web.viewPost',['slug'=>urlencode($blog->slug),'id'=>$blog->id])}}" class="tm-link-block"> <img class="lazy" data-src="{{ asset('admin/post/thumb/'.$blog->image) }}" alt="blog1">
+                                        <div class="tm-blog-hover"> <span class="tm-blog-shap"></span> <i class="fa fa-link"></i> </div>
+                                    </a>
+                                </div>
+                                <div class="empty-space col-xs-b25"></div>
+                                <div class="tm-blog-body">
+                                    <h2 class="tm-blog-heading"> <a href="{{route('web.viewPost',['slug'=>urlencode($blog->slug),'id'=>$blog->id])}}" class="tm-link-block">{{ $blog->title }}</a> </h2>
+                                    <div class="empty-space col-xs-b15"></div>
+                                    <div class="tm-blog-meta"><span><i class="fa fa-calendar"></i>{{ date_format($blog->created_at, "M m, Y") }}</span> <span>Share  <a href="" class="blog-share-whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></a> <a href="" class="blog-share-fb"><i class="fa fa-facebook" aria-hidden="true"></i></a></span></div>
+                                    <div class="empty-space col-xs-b20"></div>
+                                    <div class="tm-blog-separator"></div>
+                                    <div class="tm-entry-content">
+                                        <p>{!! Str::words($blog->body, 10, ' ...') !!}</p>
+                                        <div class="empty-space col-xs-b20"></div><a href="{{route('web.viewPost',['slug'=>urlencode($blog->slug),'id'=>$blog->id])}}" class="btm-readmore"> READ MORE <i class="fa fa-arrow-right" aria-hidden="true"></i></a> </div>
+                                </div>
+                            </div>
+                            <div class="empty-space col-xs-b30"></div>
                         </div>
-                        <div class="empty-space col-xs-b25"></div>
-                        <div class="tm-blog-body">
-                            <h2 class="tm-blog-heading"> <a href="{{route('web.blog-details')}}" class="tm-link-block">SHOULD I UNDERGO A TOTAL JOINT REPLACEMENT FOR ARTHRITIS?</a> </h2>
-                            <div class="empty-space col-xs-b15"></div>
-                            <div class="tm-blog-meta"><span><i class="fa fa-calendar"></i>Jan 23, 2018</span> <span>Share  <a href="" class="blog-share-whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></a> <a href="" class="blog-share-fb"><i class="fa fa-facebook" aria-hidden="true"></i></a></span></div>
-                            <div class="empty-space col-xs-b20"></div>
-                            <div class="tm-blog-separator"></div>
-                            <div class="tm-entry-content">
-                                <p>Osteoarthritis can be debilitating. When joints are severely affected by arthritis, one potential treatment option to explore is replacing...</p>
-                                <div class="empty-space col-xs-b20"></div><a href="{{route('web.blog-details')}}" class="btm-readmore"> READ MORE <i class="fa fa-arrow-right" aria-hidden="true"></i></a> </div>
-                        </div>
-                    </div>
-                    <div class="empty-space col-xs-b30"></div>
+                    @endforeach
+                @else
+                <div class="col-md-12 text-center">
+                    <h3>There's No Blog Posts</h3>
                 </div>
-                <div class="col-md-4">
-                    <div class="tm-post tm-style1 tm-type1">
-                        <div class="tm-post-thumb">
-                            <a href="blog2.html" class="tm-link-block"> <img class="lazy" data-src="web/assets/img/video-bg.jpg" alt="blog-01">
-                                <div class="tm-blog-hover"> <span class="tm-blog-shap"></span> <i class="fa fa-link"></i> </div>
-                            </a>
-                        </div>
-                        <div class="empty-space col-xs-b25"></div>
-                        <div class="tm-blog-body">
-                            <h2 class="tm-blog-heading"> <a href="blog2.html" class="tm-link-block">Why Would I Need to See an Orthopaedic Doctor?</a> </h2>
-                            <div class="empty-space col-xs-b15"></div>
-                            <div class="tm-blog-meta"><span><i class="fa fa-calendar"></i>Jan 23, 2018</span> <span>Share  <a href="" class="blog-share-whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></a> <a href="" class="blog-share-fb"><i class="fa fa-facebook" aria-hidden="true"></i></a></span></div>
-                            <div class="empty-space col-xs-b20"></div>
-                            <div class="tm-blog-separator"></div>
-                            <div class="tm-entry-content">
-                                <p>Do you suffer from long-term tendon, muscle, or joint pain? Do you have chronic back problems? There are more than 28 million people who...</p>
-                                <div class="empty-space col-xs-b20"></div><a href="blog2.html" class="btm-readmore">READ MORE <i class="fa fa-arrow-right" aria-hidden="true"></i></a> </div>
-                        </div>
-                    </div>
-                    <div class="empty-space col-xs-b30"></div>
-                </div>
-                <div class="col-md-4">
-                    <div class="tm-post tm-style1 tm-type1">
-                        <div class="tm-post-thumb">
-                            <a href="#" class="tm-link-block"> <img class="lazy" data-src="web/assets/img/slide-02.jpg" alt="blog-01">
-                                <div class="tm-blog-hover"> <span class="tm-blog-shap"></span> <i class="fa fa-link"></i> </div>
-                            </a>
-                        </div>
-                        <div class="empty-space col-xs-b25"></div>
-                        <div class="tm-blog-body">
-                            <h2 class="tm-blog-heading"> <a href="#" class="tm-link-block">Experiencing Chronic Neck Pain on Your Right Side? What Could it Be?</a> </h2>
-                            <div class="empty-space col-xs-b15"></div>
-                            <div class="tm-blog-meta"><span><i class="fa fa-calendar"></i>Jan 23, 2018</span> <span>Share  <a href="" class="blog-share-whatsapp"><i class="fa fa-whatsapp" aria-hidden="true"></i></a> <a href="" class="blog-share-fb"><i class="fa fa-facebook" aria-hidden="true"></i></a></span></div>
-                            <div class="empty-space col-xs-b20"></div>
-                            <div class="tm-blog-separator"></div>
-                            <div class="tm-entry-content">
-                                <p>Chronic neck pain is a common issue that millions of people just like you face every day. The spinal structure...</p>
-                                <div class="empty-space col-xs-b20"></div><a href="blog3.html" class="btm-readmore">READ MORE <i class="fa fa-arrow-right" aria-hidden="true"></i></a> </div>
-                        </div>
-                    </div>
-                    <div class="empty-space col-xs-b30"></div>
-                </div>
-           
+                @endif
             </div>
         </div>
         <div class="empty-space col-md-b0 col-xs-b40"></div>
         <div class="empty-space col-xs-b20 text-center"><a href="{{route('web.blog')}}" class="tm-btn1">View MORE</a> </div>
-</section>
+    </section>
+    {{-- Blog Section Ends --}}
     
     <section id="contact">
         <div class="empty-space col-md-b100 col-xs-b70"></div>
