@@ -14,11 +14,7 @@
    <body data-spy="scroll" data-target=".tm-primary-nav">
       <div id="tm-preloader">
          <div id="tm-preloader-in">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            
          </div>
       </div>
       <header>
