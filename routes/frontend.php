@@ -21,6 +21,8 @@ Route::group(['namespace' => 'Frontend'], function(){
 
     // Appointment
     Route::group(['namespace' => 'Appointment'], function () {
-        Route::post('/appointment', 'AppointmentController@index')->name('web.appointment');
+        // Route::post('/appointment', 'AppointmentController@index')->name('web.appointment');
+        Route::post('/appointment', 'AppointmentController@index')->name('web.ajax.appointment');
+        
     });
 });

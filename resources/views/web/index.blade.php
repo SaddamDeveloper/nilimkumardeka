@@ -148,6 +148,7 @@
                 <div class="col-lg-5">
                     <div class="empty-space col-md-b40 col-xs-b40"></div>
                         <form method="POST" action="#" class="tm-appointment-form" id="appointment-form">
+                            @csrf
                             <div id="tm-alert1"></div>
                             <div class="tm-form-field">
                                 <input type="text" id="uname" name="uname" placeholder="Full Name" required> <span class="bar"></span> </div>
@@ -338,10 +339,46 @@
     @section('script')
         <script>
             $(function(){
-                $('#appointment-submit').click(function(e){
+                function submitAppointment(data){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                    url: "{{route('web.ajax.appointment')}}",
+                    method: "POST",
+                    data: {data:data},
+                    contentType: false,
+                    cache:false,
+                    processData: false,
+                    dataType:"json",
+                    success: function(response){
+                        var html = '';
+                        if(data.errors)
+                        {
+                            html = '<div class="alert alert-danger">';
+                            for(var count = 0; count < data.errors.length; count++){
+                                html += '<p>' + data.errors[count] + '</p>';
+                            }
+                            html += '</div>';
+                        }
+                        if(data.success){
+                            html = '<div class="alert alert-success">' + data.success + '</div>';
+                            $('#appointment-form')[0].reset();
+                        }
+
+                        $("#tm-alert1").html(html);
+                    }
+                });
+                }
+                $('#appointment-form').on('submit', function(e){
                     e.preventDefault();
-                    var form = $('form')[0]; // You need to use standard javascript object here
-                    var formData = new FormData(form);
+                    var formData = new FormData(this);
+                    if(formData){
+                        console.log(formData);
+                        // submitAppointment(formData);
+                    }
                 });
             });
         </script>

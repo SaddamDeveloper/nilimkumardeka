@@ -5,17 +5,23 @@ namespace App\Http\Controllers\Frontend\Appointment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use Validator;
 
 class AppointmentController extends Controller
 {
     public function index(Request $request){
-        $this->validate($request, [
-            'uname'     => 'required',
-            'uemail'    => 'required|email',
-            'unumber'   => 'required|numeric',
-            'udate'      => 'required'
-        ]);
-
+        $rules = array(
+            'uname'         => 'required',
+            'uemail'        => 'required|email',
+            'unumber'       => 'required|numeric',
+            'udate'         => 'required'
+        );
+        $error = Validator::make($request->all(), $rules);
+        if($error->fails())
+        {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        
         $appointment = new Appointment;
         $appointment->uname     = $request->input('uname');
         $appointment->uemail    = $request->input('uemail');
@@ -23,9 +29,7 @@ class AppointmentController extends Controller
         $appointment->umsg      = $request->input('umsg');
         $appointment->udate      = $request->input('udate');
         if($appointment->save()){
-            return redirect()->back()->with('message', 'Appointment Added Successfully');
-        }else{
-            return redirect()->back()->with('error', 'Something went wrong!');
+            return response()->json(['success' => 'Data Added successfully.']);
         }
     }
 }
