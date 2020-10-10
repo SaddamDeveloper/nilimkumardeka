@@ -24,7 +24,7 @@
             </div>
             <div class="tm-header-menu">
                <div class="container tm-header-menu-container">
-                  <div class="tm-site-branding"> <a href="{{route('web.index')}}" class="tm-logo-link"> <img src="web/assets/img/logo.png" alt="" class="tm-logo"> </a> </div>
+                  <div class="tm-site-branding"> <a href="{{route('web.index')}}" class="tm-logo-link"> <img src="{{asset('web/assets/img/logo.png')}}" alt="" class="tm-logo"> </a> </div>
                   <nav class="tm-primary-nav">
                      <ul class="tm-primary-nav-list">
                         <li class="menu-item menu-item-has-children current-menu-ancestor current-menu-parent"> <a href="{{route('web.index')}}" class="nav-link">HOME</a> </li>
