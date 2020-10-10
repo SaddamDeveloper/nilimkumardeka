@@ -137,12 +137,7 @@
                         <div class="tm-section-heading text-center">
                             <h2>MAKE AN APPOINTMENT</h2>
                             <div class="col-md-6">
-                                @if (Session::has('message'))
-                                <div class="alert alert-success" >{{ Session::get('message') }}</div>
-                                @endif
-                                @if (Session::has('error'))
-                                    <div class="alert alert-danger">{{ Session::get('error') }}</div>
-                                @endif
+                               
                             </div>
                             <div class="tm-section-seperator"><span></span></div>
                             <p>If you wont to make an appointment with any specialist just fill up the form with valid data and we will contact you via phone for confirmation.</p>
@@ -152,54 +147,25 @@
 
                 <div class="col-lg-5">
                     <div class="empty-space col-md-b40 col-xs-b40"></div>
-                    {{ Form::open(['method' => 'post','route'=>'web.appointment', 'class' => 'tm-appointment-form']) }}
-                        <div id="tm-alert1"></div>
-                        <div class="tm-form-field">
-                            <input type="text" id="uname" name="uname" placeholder="Full Name" value="{{ old('uname') }}" required> 
-                            @if($errors->has('uname'))
-                                <span class="invalid-feedback" role="alert" style="color:red">
-                                    <strong>{{ $errors->first('uname') }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="tm-form-field">
-                            <input type="email" id="uemail" name="uemail" placeholder="Email Address" value="{{ old('uemail') }}" required>
-                            @if($errors->has('uemail'))
-                                <span class="invalid-feedback" role="alert" style="color:red">
-                                    <strong>{{ $errors->first('uemail') }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="tm-form-field">
-                            <input type="number" id="unumber" name="unumber" placeholder="Phone Number" value="{{ old('unumber') }}"required>
-                            @if($errors->has('unumber'))
-                                <span class="invalid-feedback" role="alert" style="color:red">
-                                    <strong>{{ $errors->first('unumber') }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="tm-form-field">
-                            <input name="udate" type="date" placeholder="Booking Date" value="{{ old('udate') }}" required>
-                            {{-- <div class="date-icon"><i class="fa fa-calendar"></i></div> --}}
-                            @if($errors->has('udate'))
-                                <span class="invalid-feedback" role="alert" style="color:red">
-                                    <strong>{{ $errors->first('udate') }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="tm-form-field">
-                            <textarea cols="30" rows="10" id="umsg" name="umsg" placeholder="Your Message">{{ old('umsg') }}</textarea>
-                            @if($errors->has('umsg'))
-                                <span class="invalid-feedback" role="alert" style="color:red">
-                                    <strong>{{ $errors->first('umsg') }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="empty-space col-xs-b10"></div>
-                        <div class="tm-form-field">
-                            <button class="tm-btn1 tm-reverse" type="submit" id="appointment-submit" name="submit">BOOK APPOINTMENT</button>
-                        </div>
-                    </form>
+                        <form method="POST" action="#" class="tm-appointment-form" id="appointment-form">
+                            <div id="tm-alert1"></div>
+                            <div class="tm-form-field">
+                                <input type="text" id="uname" name="uname" placeholder="Full Name" required> <span class="bar"></span> </div>
+                            <div class="tm-form-field">
+                                <input type="text" id="uemail" name="uemail" placeholder="Email Address" required> <span class="bar"></span> </div>
+                            <div class="tm-form-field">
+                                <input type="text" id="unumber" name="unumber" placeholder="Phone Number" required> <span class="bar"></span> </div>
+                            <div class="tm-form-field">
+                                <input name="udate" type="text" id="udate" placeholder="Booking Date"> <span class="bar"></span>
+                                <div class="date-icon"><i class="fa fa-calendar"></i></div>
+                            </div>
+                            <div class="tm-form-field">
+                                <textarea cols="30" rows="10" id="umsg" name="umsg" placeholder="Your Message"></textarea> <span class="bar"></span> </div>
+                            <div class="empty-space col-xs-b10"></div>
+                            <div class="tm-form-field">
+                                <button class="tm-btn1 tm-reverse" type="submit" id="appointment-submit" name="submit">BOOK APPOINTMENT</button>
+                            </div>
+                        </form>
                     <div class="empty-space col-md-b60 col-xs-b70"></div>
                 </div>
             </div>
@@ -370,5 +336,13 @@
     @endsection
 
     @section('script')
-    
+        <script>
+            $(function(){
+                $('#appointment-submit').click(function(e){
+                    e.preventDefault();
+                    var form = $('form')[0]; // You need to use standard javascript object here
+                    var formData = new FormData(form);
+                });
+            });
+        </script>
     @endsection
