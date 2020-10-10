@@ -13,7 +13,7 @@ class BlogsController extends Controller
     }
 
     public function blog() {
-        $blogs = Blog::orderBy('id', 'DESC')->paginate(2);
+        $blogs = Blog::orderBy('id', 'DESC')->paginate(15);
         return view('web.blog', compact('blogs'));
     }
 }
