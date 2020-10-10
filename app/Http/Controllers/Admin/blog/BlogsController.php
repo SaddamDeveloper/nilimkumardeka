@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin\Blog;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use App\Models\Blog;
 use DB;
 use File;
+
 class BlogsController extends Controller
 {
     public function index(){
@@ -249,3 +250,4 @@ class BlogsController extends Controller
     
     }
 }
+
