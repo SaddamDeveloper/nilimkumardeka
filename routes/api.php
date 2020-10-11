@@ -17,3 +17,12 @@ Route::get('numbers/list','Api\SlotController@slotNumbers');
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+// Appointment
+Route::group(['namespace' => 'Frontend'], function(){
+    Route::group(['namespace' => 'Appointment'], function () {
+        // Route::post('/appointment', 'AppointmentController@index')->name('web.appointment');
+        Route::post('/ appointment', 'AppointmentController@index')->name('web.ajax.appointment');
+        
+    });
+});

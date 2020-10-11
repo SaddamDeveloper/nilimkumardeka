@@ -3,21 +3,15 @@
 @section('content')
 
 <div class="right_col" role="main">
-  <div class="row">
-
-    <div class="col-md-12">
-      <div class="x_panel">
-        <div class="x_title">
-            <h2>Dashboard</h2>
-            <div class="clearfix"></div>
-        </div>
-        <div>
-          <div class="x_content">
-
-          </div>
-        </div>
-      </div>
+  <div class="row tile_count">
+    <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-users"></i> Total Blogs</span>
+      <div class="count">{{$total_blog}}</div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+      <span class="count_top"><i class="fa fa-briefcase"></i> Total Appointment</span>
+      <div class="count">{{$total_appointment}}</div>
     </div>
   </div>
 </div>
- @endsection
+@endsection

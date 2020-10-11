@@ -147,26 +147,24 @@
 
                 <div class="col-lg-5">
                     <div class="empty-space col-md-b40 col-xs-b40"></div>
-                        <form method="POST" action="#" class="tm-appointment-form" id="appointment-form">
-                            @csrf
-                            <div id="tm-alert1"></div>
-                            <div class="tm-form-field">
-                                <input type="text" id="uname" name="uname" placeholder="Full Name" required> <span class="bar"></span> </div>
-                            <div class="tm-form-field">
-                                <input type="text" id="uemail" name="uemail" placeholder="Email Address" required> <span class="bar"></span> </div>
-                            <div class="tm-form-field">
-                                <input type="text" id="unumber" name="unumber" placeholder="Phone Number" required> <span class="bar"></span> </div>
-                            <div class="tm-form-field">
-                                <input name="udate" type="text" id="udate" placeholder="Booking Date"> <span class="bar"></span>
-                                <div class="date-icon"><i class="fa fa-calendar"></i></div>
-                            </div>
-                            <div class="tm-form-field">
-                                <textarea cols="30" rows="10" id="umsg" name="umsg" placeholder="Your Message"></textarea> <span class="bar"></span> </div>
-                            <div class="empty-space col-xs-b10"></div>
-                            <div class="tm-form-field">
-                                <button class="tm-btn1 tm-reverse" type="submit" id="appointment-submit" name="submit">BOOK APPOINTMENT</button>
-                            </div>
-                        </form>
+                    <form method="POST" id="form-submit">
+                        <div id="tm-alert1"></div>
+                        <div class="tm-form-field">
+                            <input type="text" name="uname" placeholder="Full Name" required> <span class="bar"></span> </div>
+                        <div class="tm-form-field">
+                            <input type="text" name="uemail" placeholder="Email Address" required> <span class="bar"></span> </div>
+                        <div class="tm-form-field">
+                            <input type="text" name="unumber" placeholder="Phone Number" required> <span class="bar"></span> </div>
+                        <div class="tm-form-field">
+                            <input name="udate" type="date" placeholder="Booking Date"> <span class="bar"></span>
+                        </div>
+                        <div class="tm-form-field">
+                            <textarea cols="30" rows="10" name="umsg" placeholder="Your Message"></textarea> <span class="bar"></span> </div>
+                        <div class="empty-space col-xs-b10"></div>
+                        <div class="tm-form-field">
+                            <button class="tm-btn1 tm-reverse" id="submit" name="submit">BOOK APPOINTMENT</button>
+                        </div>
+                    </form>
                     <div class="empty-space col-md-b60 col-xs-b70"></div>
                 </div>
             </div>
@@ -339,46 +337,40 @@
     @section('script')
         <script>
             $(function(){
-                function submitAppointment(data){
+               
+                $('#form-submit').on('submit', function(e){
+                    e.preventDefault();
+                    var data = new FormData();
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     });
                     $.ajax({
-                    url: "{{route('web.ajax.appointment')}}",
-                    method: "POST",
-                    data: {data:data},
-                    contentType: false,
-                    cache:false,
-                    processData: false,
-                    dataType:"json",
-                    success: function(response){
-                        var html = '';
-                        if(data.errors)
-                        {
-                            html = '<div class="alert alert-danger">';
-                            for(var count = 0; count < data.errors.length; count++){
-                                html += '<p>' + data.errors[count] + '</p>';
+                        url: "{{route('web.ajax.appointment')}}",
+                        method: "POST",
+                        data: {data: new FormData(this)},
+                        cache : false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(response){
+                            var html = '';
+                            if(data.errors)
+                            {
+                                html = '<div class="alert alert-danger">';
+                                for(var count = 0; count < data.errors.length; count++){
+                                    html += '<p>' + data.errors[count] + '</p>';
+                                }
+                                html += '</div>';
                             }
-                            html += '</div>';
-                        }
-                        if(data.success){
-                            html = '<div class="alert alert-success">' + data.success + '</div>';
-                            $('#appointment-form')[0].reset();
-                        }
+                            if(data.success){
+                                html = '<div class="alert alert-success">' + data.success + '</div>';
+                                $('#appointment-form')[0].reset();
+                            }
 
-                        $("#tm-alert1").html(html);
-                    }
-                });
-                }
-                $('#appointment-form').on('submit', function(e){
-                    e.preventDefault();
-                    var formData = new FormData(this);
-                    if(formData){
-                        console.log(formData);
-                        // submitAppointment(formData);
-                    }
+                            $("#tm-alert1").html(html);
+                        }
+                    });
                 });
             });
         </script>

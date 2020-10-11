@@ -10,6 +10,7 @@ use Validator;
 class AppointmentController extends Controller
 {
     public function index(Request $request){
+        dd($request->uname);
         $rules = array(
             'uname'         => 'required',
             'uemail'        => 'required|email',
@@ -21,7 +22,7 @@ class AppointmentController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        
+        dd($request->input('uname'));
         $appointment = new Appointment;
         $appointment->uname     = $request->input('uname');
         $appointment->uemail    = $request->input('uemail');
