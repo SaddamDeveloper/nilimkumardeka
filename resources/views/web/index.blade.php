@@ -147,8 +147,9 @@
 
                 <div class="col-lg-5">
                     <div class="empty-space col-md-b40 col-xs-b40"></div>
-                    <form method="POST" id="form-submit">
+                    <form method="POST" id="form-submit" name="form-submit">
                         <div id="tm-alert1"></div>
+                        <div id="alert"></div>
                         <div class="tm-form-field">
                             <input type="text" name="uname" placeholder="Full Name" required> <span class="bar"></span> </div>
                         <div class="tm-form-field">
@@ -340,7 +341,8 @@
                
                 $('#form-submit').on('submit', function(e){
                     e.preventDefault();
-                    var data = new FormData();
+                    var data = $(this).serializeArray();
+                    console.log(data);
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -349,26 +351,25 @@
                     $.ajax({
                         url: "{{route('web.ajax.appointment')}}",
                         method: "POST",
-                        data: {data: new FormData(this)},
-                        cache : false,
-                        processData: false,
-                        dataType: "json",
+                        data: data,
                         success: function(response){
                             var html = '';
-                            if(data.errors)
+                            if(response.errors)
                             {
                                 html = '<div class="alert alert-danger">';
-                                for(var count = 0; count < data.errors.length; count++){
-                                    html += '<p>' + data.errors[count] + '</p>';
+                                for(var count = 0; count < response.errors.length; count++){
+                                    html += '<p>' + response.errors[count] + '</p>';
                                 }
                                 html += '</div>';
                             }
-                            if(data.success){
-                                html = '<div class="alert alert-success">' + data.success + '</div>';
-                                $('#appointment-form')[0].reset();
+                            if(response.success){
+                                html = '<div class="alert alert-success">' + response.success + '</div>';
+                                $('#form-submit')[0].reset();
                             }
-
-                            $("#tm-alert1").html(html);
+                            if(response.error){
+                                html = '<div class="alert alert-danger">' + response.error + '</div>';
+                            }
+                            $("#alert").html(html);
                         }
                     });
                 });

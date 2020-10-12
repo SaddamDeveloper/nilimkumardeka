@@ -22,7 +22,7 @@ Route::get('numbers/list','Api\SlotController@slotNumbers');
 Route::group(['namespace' => 'Frontend'], function(){
     Route::group(['namespace' => 'Appointment'], function () {
         // Route::post('/appointment', 'AppointmentController@index')->name('web.appointment');
-        Route::post('/ appointment', 'AppointmentController@index')->name('web.ajax.appointment');
+        Route::post('/appointment', 'AppointmentController@index')->name('web.ajax.appointment');
         
     });
 });

@@ -10,10 +10,9 @@ use Validator;
 class AppointmentController extends Controller
 {
     public function index(Request $request){
-        dd($request->uname);
         $rules = array(
             'uname'         => 'required',
-            'uemail'        => 'required|email',
+            'uemail'        => 'required|email:rfc,dns',
             'unumber'       => 'required|numeric',
             'udate'         => 'required'
         );
@@ -22,7 +21,18 @@ class AppointmentController extends Controller
         {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        dd($request->input('uname'));
+
+        $email = $request->input('uemail');
+        $isExists = Appointment::where('uemail',$email)->first();
+        if($isExists){
+            return response()->json(array("error" => "Email already exists!"));
+        }
+
+        $mobile = $request->input('unumber');
+        $isExists = Appointment::where('unumber',$mobile)->first();
+        if($isExists){
+            return response()->json(array("error" => "Mobile already exists!"));
+        }
         $appointment = new Appointment;
         $appointment->uname     = $request->input('uname');
         $appointment->uemail    = $request->input('uemail');
